@@ -40,6 +40,7 @@ pacstrap "$AIROOTFS" base linux linux-firmware vim archiso mkinitcpio-archiso ne
 
 # ===== 設定ファイル追加 =====
 echo "[*] 基本設定を投入..."
+
 echo "frank" > "$AIROOTFS/etc/hostname"
 
 cat <<EOF > "$AIROOTFS/etc/vconsole.conf"
@@ -60,15 +61,12 @@ mkdir -p "$AIROOTFS/etc/pacman.d"
 cp /etc/pacman.conf "$AIROOTFS/etc/"
 cp /etc/pacman.d/mirrorlist "$AIROOTFS/etc/pacman.d/"
 echo "LANG=en_US.UTF-8" > "$AIROOTFS/etc/locale.conf"
+
+
 sed -i 's/^HOOKS=.*/HOOKS=(base udev archiso block filesystems keyboard fsck)/' \
     "$AIROOTFS/etc/mkinitcpio.conf"
-    
+
 sed -i 's/^MODULES=.*/MODULES=(loop squashfs)/' "$AIROOTFS/etc/mkinitcpio.conf"
-
-
-
-
-
 
 arch-chroot "$AIROOTFS" mkinitcpio -P 
 
