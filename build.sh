@@ -34,7 +34,7 @@ mkfs.ext4 "$AIROOTFS_IMG"
 mkdir -p "$AIROOTFS_MOUNT"
 mount -o loop "$AIROOTFS_IMG" "$AIROOTFS_MOUNT"
 AIROOTFS="$AIROOTFS_MOUNT"
-pacstrap "$AIROOTFS" base linux linux-firmware vim archiso mkinitcpio-archiso networkmanager qemu virt-manager libvirt dnsmasq bridge-utils iptables lxc lxd cockpit cockpit-machines
+pacstrap "$AIROOTFS" base linux linux-firmware vim archiso mkinitcpio-archiso networkmanager
 
 
 
@@ -60,16 +60,18 @@ mkdir -p "$AIROOTFS/etc/pacman.d"
 cp /etc/pacman.conf "$AIROOTFS/etc/"
 cp /etc/pacman.d/mirrorlist "$AIROOTFS/etc/pacman.d/"
 echo "LANG=en_US.UTF-8" > "$AIROOTFS/etc/locale.conf"
-
-
 sed -i 's/^HOOKS=.*/HOOKS=(base udev archiso block filesystems keyboard fsck)/' \
     "$AIROOTFS/etc/mkinitcpio.conf"
-
+    
 sed -i 's/^MODULES=.*/MODULES=(loop squashfs)/' "$AIROOTFS/etc/mkinitcpio.conf"
 
+
+
+
+
+
 arch-chroot "$AIROOTFS" mkinitcpio -P 
-arch-chroot "$AIROOTFS" systemctl enable libvirtd
-arch-chroot "$AIROOTFS" systemctl enable cockpit.socket
+
 mkdir -p "$ISO_ROOT/isolinux"
 cp /usr/lib/syslinux/bios/isolinux.bin "$ISO_ROOT/isolinux/"
 cp /usr/lib/syslinux/bios/ldlinux.c32 "$ISO_ROOT/isolinux/"
