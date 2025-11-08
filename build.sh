@@ -69,7 +69,7 @@ sed -i 's/^HOOKS=.*/HOOKS=(base udev archiso block filesystems keyboard fsck)/' 
 sed -i 's/^MODULES=.*/MODULES=(loop squashfs)/' "$AIROOTFS/etc/mkinitcpio.conf"
 
 arch-chroot "$AIROOTFS" mkinitcpio -P 
-
+cp install.sh $AIROOTFS/bin/
 mkdir -p "$ISO_ROOT/isolinux"
 cp /usr/lib/syslinux/bios/isolinux.bin "$ISO_ROOT/isolinux/"
 cp /usr/lib/syslinux/bios/ldlinux.c32 "$ISO_ROOT/isolinux/"
